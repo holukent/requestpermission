@@ -3,7 +3,6 @@
     package="com.example.requestpermission">
 
     <uses-permission-sdk-23 android:name="android.permission.CALL_PHONE"/>
-    <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
