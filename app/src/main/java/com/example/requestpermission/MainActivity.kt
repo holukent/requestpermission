@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,19 +19,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btn.setOnClickListener {
+//            requestPermission()
+
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED ->
+                    requestpermission.launch(Manifest.permission.CALL_PHONE)
+            }
+        }
+
+    }
+
+    /*Allow the system to manage the permission request code*/
+    private val requestpermission:ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                Toast.makeText(this, "HEHE", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+
+            }
+        }
+    val requestpermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+
         }
 
 
-        requestPermission()
-        requestPer()
-    }
 
-    fun requestPer() {
-        if (Build.VERSION.SDK_INT >= 28) {
-            Toast.makeText(this, "${Build.VERSION.SDK_INT}", Toast.LENGTH_SHORT).show()
-        }
-    }
 
+    /*Manage the permission request code yourself*/
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= 28) {  // Androis 6.0 以上
             // 判斷是否已取得授權
@@ -51,8 +72,8 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
 
-        when(requestCode) {
-            1 ->
+        when (requestCode) {
+            2 -> Toast.makeText(this, "here", Toast.LENGTH_SHORT).show()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
