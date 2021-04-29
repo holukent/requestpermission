@@ -1,6 +1,8 @@
 package com.example.requestpermission
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -21,38 +23,68 @@ class MainActivity : AppCompatActivity() {
         binding.btn.setOnClickListener {
 //            requestPermission()
 
+//            when {
+//                ContextCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.CALL_PHONE
+//                ) != PackageManager.PERMISSION_GRANTED ->
+//                    requestpermission.launch(Manifest.permission.CALL_PHONE)
+//            }
             when {
                 ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.CALL_PHONE
                 ) != PackageManager.PERMISSION_GRANTED ->
-                    requestpermission.launch(Manifest.permission.CALL_PHONE)
+                    requestpermissions.launch(arrayOf(Manifest.permission.CALL_PHONE))
             }
         }
 
+        binding.btnnextpage.setOnClickListener {
+            mActivityLancher.launch(
+                Intent(this, MainActivity2::class.java).putExtra(
+                    "page1",
+                    "page123"
+                )
+            )
+        }
     }
 
+    /*StartActivityForResult*/
+    val mActivityLancher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK)
+                Toast.makeText(this, "${it.data?.getStringExtra("result")}", Toast.LENGTH_SHORT)
+                    .show()
+            else Toast.makeText(this, "no DATA", Toast.LENGTH_SHORT)
+                .show()
+        }
+
     /*Allow the system to manage the permission request code*/
-    private val requestpermission:ActivityResultLauncher<String> =
+    private val requestpermission: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 Toast.makeText(this, "HEHE", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
-
             }
         }
-    val requestpermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-
+    private val requestpermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
+            map.entries.forEach {
+                when (it.key) {
+                    Manifest.permission.CALL_PHONE -> {
+                        if (!it.value) finish()
+                    }
+                    else -> {
+                    }
+                }
+            }
         }
-
-
 
 
     /*Manage the permission request code yourself*/
     private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= 28) {  // Androis 6.0 以上
+        if (Build.VERSION.SDK_INT >= 30) {  // Androis 6.0 以上
             // 判斷是否已取得授權
             val hasPermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)

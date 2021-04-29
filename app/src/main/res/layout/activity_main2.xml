@@ -4,29 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity2">
+
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/main2Text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:textSize="40sp"/>
-
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="push"
-        />
+        android:textSize="30sp"
+        android:text="main2text"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnnextpage"
-        android:layout_width="match_parent"
+        android:id="@+id/btnprepage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nextpage"
-        />
-
-
+        android:text="prepage"/>
 
 </LinearLayout>
