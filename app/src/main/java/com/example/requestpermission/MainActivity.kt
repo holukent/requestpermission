@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.requestpermission.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btn.setOnClickListener {
+
 //            requestPermission()
 
 //            when {
@@ -40,13 +43,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnnextpage.setOnClickListener {
-            mActivityLancher.launch(
-                Intent(this, MainActivity2::class.java).putExtra(
-                    "page1",
-                    "page123"
-                )
-            )
+            Toast.makeText(this,isExternalStorageReadable().toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,isExternalStorageWritable().toString(),Toast.LENGTH_SHORT).show()
+
+            val externalStorageVolumes: Array<out File> =
+                ContextCompat.getExternalFilesDirs(applicationContext, null)
+            val primaryExternalStorage = externalStorageVolumes[0]
+
+
+
+
+//            mActivityLancher.launch(
+//                Intent(this, MainActivity2::class.java).putExtra(
+//                    "page1",
+//                    "page123"
+//                )
+//            )
         }
+    }
+
+    fun isExternalStorageWritable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    }
+    fun isExternalStorageReadable(): Boolean {
+        return Environment.getExternalStorageState() in
+                setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
     }
 
     /*StartActivityForResult*/
@@ -83,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
 
     /*Manage the permission request code yourself*/
-    private fun requestPermission() {
+    private fun requestPermission1() {
         if (Build.VERSION.SDK_INT >= 30) {  // Androis 6.0 以上
             // 判斷是否已取得授權
             val hasPermission =

@@ -17,8 +17,8 @@ class MainActivity2 : AppCompatActivity() {
 
         val btnprepage = findViewById<Button>(R.id.btnprepage)
         btnprepage.setOnClickListener {
-//            val intent = Intent().apply { putExtra("result","prenext") }
-//            setResult(Activity.RESULT_OK,intent)
+            val intent = Intent().apply { putExtra("result","prenext") }
+            setResult(Activity.RESULT_OK,intent)
             finish()
         }
     }
